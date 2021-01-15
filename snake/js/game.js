@@ -6,14 +6,15 @@ class Game{
         this.height = this.canvas.height
         this.width = this.canvas.width
         this.score = 0
-        this.level = 10
+        this.level = 1
         this.over = true
         
         this.w = 10
+        this.wallcolor = '#212529'
         this.snake = new snake(40,10,this.w, this.w, 'red')
         this.food = new food(50,50, this.w, 'yellow')
-        this.wall = [new wall(0,0,this.w, this.height, 'blue'), new wall(this.width-this.w-(this.width%this.w), 0, this.w, this.height, 'blue'),
-                    new wall(0,0,this.width,this.w, 'blue'), new wall(0, this.height-this.w-(this.height%10), this.width-(this.width%10), this.w, 'blue')]
+        this.wall = [new wall(0,0,this.w, this.height, this.wallcolor), new wall(this.width-this.w-(this.width%this.w), 0, this.w, this.height, this.wallcolor),
+                    new wall(0,0,this.width,this.w, this.wallcolor), new wall(0, this.height-this.w-(this.height%10), this.width-(this.width%10), this.w, this.wallcolor)]
         this.terrain = new terrain(this.w, this.w, this.width-(this.width%10)- this.w, this.height-(this.height%10)-this.w, 'green')
         this.frames = 0
     }
@@ -22,6 +23,24 @@ class Game{
         this.snake = new snake(40,10,this.w, this.w, 'red')
         this.score = 0
         this.over = false
+    }
+
+    keyHandler(key){
+
+        switch(key){
+            case 'ArrowUp':
+                this.snake.turn('up')
+                break
+            case 'ArrowDown':
+                this.snake.turn('down')
+                break
+            case 'ArrowLeft':
+                this.snake.turn('left')
+                break
+            case 'ArrowRight':
+                this.snake.turn('right')
+                break
+        }
     }
 
     refresh(key){
@@ -36,7 +55,7 @@ class Game{
                 this.food.x = b-(b%10)
                 this.food.y = a-(a%10)
                 this.draw()
-                this.score = this.score + this.level
+                this.score = this.score + this.level*3
             }
             if(((this.snake.head.x < this.terrain.x | this.snake.head.x > this.terrain.w - this.snake.w) & this.snake.dy == 0) | ((this.snake.head.y < this.terrain.y | this.snake.head.y > this.terrain.h-this.snake.w) & this.snake.dx == 0)){
                 this.snake.alive = false

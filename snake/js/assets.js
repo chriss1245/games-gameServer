@@ -1,27 +1,37 @@
 class Score{
     constructor(htmlid, gameid){
         this.htmlid = htmlid
-        this.scores = null
+        this.scores = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
         this.game = gameid
-        this.setUpHighScores()
+        //this.setUpHighScores()
+        this.showTopTen()
     }
 
     showTopTen(){
         // Writes in the html element scores the top ten of the game
-        var s = ''
-        for(var i in this.scores){
-            s = s + String(this.scores[i][0])+': ' + String(this.scores[i][1]) + '<br><br>'
+        var i = 1
+        for(var j in this.scores){
+
+            var name = 'name'+String(i)
+            var score = 'score'+ String(i)
+
+            document.getElementById(score).innerHTML = String(this.scores[j][0])
+            document.getElementById(name).innerHTML = String(this.scores[j][1])
+
+            i = i+1
         }
-        document.getElementById(this.htmlid).innerHTML = s
     }
          
     setUpHighScores(){
         // Gets the highScores from the server
-        fetch('/getScore?game='+JSON.stringify(this.game)).then((response) => {
-            return response.json();
-        }).then((myJson) => {
-            this.scores = myJson['result']}).then(this.showTopTen.bind(this))
-        
+        try{
+            fetch('/getScore?game='+JSON.stringify(this.game)).then((response) => {
+                return response.json();
+            }).then((myJson) => {
+                this.scores = myJson['result']}).then(this.showTopTen.bind(this))
+        } catch(TypeError){
+            console.log('lol')
+        }
     }
 
     addNewHighScores(newscore){
@@ -41,12 +51,25 @@ class Score{
             
             this.scores = slice1.concat([newScore].concat(slice2))
             
-            fetch('/setScore?newScore='+JSON.stringify(this.scores)+'&game='+JSON.stringify(this.game))
-            
+            try{
+                fetch('/setScore?newScore='+JSON.stringify(this.scores)+'&game='+JSON.stringify(this.game))
+            }catch(error){
+
+            }
         }
         
     }
 
 
+}
+
+class Feedback{
+    send(id, game){
+        try{
+            fetch('/giveFeedback?feedback='+ JSON.stringify(document.getElementById(id).value)+'&game='+JSON.stringify(game))
+        }catch(error){
+
+        }
+    }
 }
 

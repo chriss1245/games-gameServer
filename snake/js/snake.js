@@ -55,20 +55,20 @@ class snake{
         
     }
 
-    turn(keypressed){
+    turn(direction){
 
-        if(keypressed.key =='ArrowUp' & this.dy == 0){
+        if(direction =='up' & this.dy == 0){
            
             this.dx = 0
             this.dy = -this.w
 
-        }else if(keypressed.key =='ArrowDown' & this.dy == 0){
+        }else if(direction =='down' & this.dy == 0){
             this.dx = 0
             this.dy = this.w
-        }else if(keypressed.key == 'ArrowRight' & this.dx == 0){
+        }else if(direction == 'right' & this.dx == 0){
             this.dy = 0
             this.dx = this.w
-        }else if(keypressed.key =='ArrowLeft' & this.dx == 0){
+        }else if(direction =='left' & this.dx == 0){
             this.dy = 0
             this.dx = -this.w
         }
